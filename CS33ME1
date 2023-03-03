@@ -172,6 +172,26 @@ void FREE_TREE (BinaryTreeNode *H)
     return;
 }
 
+
+BinaryTreeNode *PARENT (BinaryTreeNode *alpha)
+{
+    BinaryTreeNode *beta = alpha;
+    while (beta->RTAG==1)
+    {
+        beta = beta->RSON;
+    }
+    beta = beta->RSON;
+    if (beta->LSON==alpha)
+    {
+        return beta;
+    }
+    beta = beta->LSON;
+    while (beta->RSON!=alpha)
+    {
+        beta = beta->RSON;
+    }
+    return beta;
+}
 /*
 Standard linear search
 */
@@ -277,39 +297,28 @@ BinaryTreeNode *POSTSUC (BinaryTreeNode *alpha)
     return(alpha);
 }
 
-void PARENT (BinaryTreeNode *alpha)
-{
-    BinaryTreeNode *beta = alpha;
-    while (beta->RTAG==1)
-    {
-        beta = beta->RSON;
-    }
-    beta = beta->RSON;
-    if (beta->LSON==alpha)
-    {
-        return beta;
-    }
-    beta = beta->LSON;
-    while (beta->RSON!=alpha)
-    {
-        beta = beta->RSON;
-    }
-    return beta;
-}
-
 void POSTORDER_T (BinaryTreeNode *H)
 {
     BinaryTreeNode *alpha = H;
-    while (true)
+    while (alpha->LTAG==1)
     {
-    	alpha = POSTSUC(alpha);
-    	if (alpha==H)
-    	{
-    		return; 
-		}
-		else
-		{
-		    VISIT(alpha);
-		}
+    	alpha = alpha->LSON;
+	}
+	while (alpha -> RTAG==1)
+	{
+	    alpha = alpha->RSON;
+	}
+	while (true)
+	{
+	    if (alpha ==H-> LSON)
+	    {
+	        VISIT(alpha);
+	        return;
+	    }
+	    else
+	    {
+	        VISIT(alpha);
+	        alpha = POSTSUC(alpha);
+	    }
 	}
 }
